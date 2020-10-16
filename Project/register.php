@@ -1,3 +1,4 @@
+
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
 <?php
@@ -80,3 +81,4 @@ if (!isset($username)) {
     <input type="password" id="p2" name="confirm" required/>
     <input type="submit" name="register" value="Register"/>
 </form>
+
