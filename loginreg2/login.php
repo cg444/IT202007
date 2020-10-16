@@ -26,7 +26,7 @@ if(isset($_POST["login"])){
         echo "<br>Invalid email<br>";
     }
     if($isValid){
-        require_once(__DIR__."/../lib/db.php");
+        require_once(__DIR__ . "/../lib/db.php");
         $db = getDB();
         if(isset($db)){
             $stmt = $db->prepare("SELECT id, email, password from Users WHERE email = :email LIMIT 1");
