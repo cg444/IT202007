@@ -1,6 +1,6 @@
 <p>Run me in the browser from your server to try</p>
 <form method="POST">
-    <label for="email">Email:</label>
+    <label for="email">Email or username:</label>
     <input type="email" id="email" name="email" required/>
     <label for="p1">Password:</label>
     <input type="password" id="p1" name="password" required/>
