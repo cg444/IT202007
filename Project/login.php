@@ -5,6 +5,8 @@
         <label for="p1">Password:</label>
         <input type="password" id="p1" name="password" required/>
         <input type="submit" name="login" value="Login"/>
+        <input type="text" id="username" name="username" required/>
+        <label for="p1">Password:</label>
     </form>
 
 <?php
@@ -30,7 +32,7 @@ if (isset($_POST["login"])) {
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
-            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email or username = :email");
+            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email or username = :email 1");
 
             $params = array(":email" => $email);
             $r = $stmt->execute($params);
