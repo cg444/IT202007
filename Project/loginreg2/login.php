@@ -29,7 +29,7 @@ if(isset($_POST["login"])){
         require_once(__DIR__ . "/../lib/db.php");
         $db = getDB();
         if(isset($db)){
-            $stmt = $db->prepare("SELECT id, email, password from Users WHERE email = :email 1");
+            $stmt = $db->prepare("SELECT id, email, password from Users WHERE email = :email or username - :email 1");
 
             $params = array(":email"=>$email);
             $r = $stmt->execute($params);
