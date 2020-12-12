@@ -105,7 +105,7 @@ function startGame() {
     draw();
 }
 // Toggle background colors
-var myVar = setInterval(setColor, 500);
+var myVar = setInterval(setColor, 1000);
 
 function setColor() {
     var x = document.body;
