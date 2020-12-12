@@ -58,7 +58,7 @@
                 ball.sX = ballSpeed;
                 rBallCount += 1;
             } else {
-                ball.sX = ballSpeed *= rBallCount;
+                ball.sX = ballSpeed + rBallCount;
                 rBallCount += 1;
             }
             ball.sY = ballSpeed / 2;
