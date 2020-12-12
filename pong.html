@@ -49,13 +49,6 @@
                 canvas.focus();
             }
         }
-        function makeRandomColor(){
-            var c = '';
-            while (c.length < 7) {
-                c += (Math.random()).toString(16).substr(-6).substr(-1)
-            }
-            return '#'+c;
-        }
         function resetBall() {
             ball.x = canvas.width / 2 - ball.w / 2;
             ball.y = canvas.height / 2 - ball.w / 2;
@@ -193,13 +186,11 @@
             // Bounce the ball off the paddles
             if (ball.y + ball.h / 2 >= leftPaddle.y && ball.y + ball.h / 2 <= leftPaddle.y + leftPaddle.h) {
                 if (ball.x <= leftPaddle.x + leftPaddle.w) {
-                    ball.c = makeRandomColor();
                     bounceBall();
                 }
             }
             if (ball.y + ball.h / 2 >= rightPaddle.y && ball.y + ball.h / 2 <= rightPaddle.y + rightPaddle.h) {
                 if (ball.x + ball.w >= rightPaddle.x) {
-                    ball.c = makeRandomColor();
                     bounceBall();
                 }
             }
