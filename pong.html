@@ -15,6 +15,7 @@
         var ballSpeed = 2;
         var paddleSpeed = 2;
         var drawables = [];
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         // Key Codes
         var W = 87;
         var S = 83;
@@ -187,6 +188,7 @@
             if (ball.y + ball.h / 2 >= leftPaddle.y && ball.y + ball.h / 2 <= leftPaddle.y + leftPaddle.h) {
                 if (ball.x <= leftPaddle.x + leftPaddle.w) {
                     bounceBall();
+                    ball.c = randomColor;
                 }
             }
             if (ball.y + ball.h / 2 >= rightPaddle.y && ball.y + ball.h / 2 <= rightPaddle.y + rightPaddle.h) {
