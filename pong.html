@@ -193,6 +193,7 @@
             }
             if (ball.y + ball.h / 2 >= rightPaddle.y && ball.y + ball.h / 2 <= rightPaddle.y + rightPaddle.h) {
                 if (ball.x + ball.w >= rightPaddle.x) {
+                    ball.c = randomColor;
                     bounceBall();
                 }
             }
