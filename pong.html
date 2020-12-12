@@ -49,11 +49,12 @@
                 canvas.focus();
             }
         }
+        var rBallCount = 0;
         function resetBall() {
             ball.x = canvas.width / 2 - ball.w / 2;
             ball.y = canvas.height / 2 - ball.w / 2;
             // Modify the ball object to have two speed properties, one for X and one for Y
-            ball.sX = ballSpeed;
+            ball.sX = ballSpeed * rBallCount;
             ball.sY = ballSpeed / 2;
 
             // Randomize initial direction
@@ -64,6 +65,7 @@
             if (Math.random() > 0.5) {
                 ball.sY *= -1;
             }
+            rBallCount += 1;
         }
         // Bounce the ball off of a paddle
         function bounceBall() {
