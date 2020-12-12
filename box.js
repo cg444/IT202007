@@ -109,7 +109,7 @@ var myVar = setInterval(setColor, 300);
 
 function setColor() {
     var x = document.body;
-    x.style.backgroundColor = x.style.backgroundColor == "blue" ? "red" : "blue";
+    x.style.backgroundColor = x.style.backgroundColor == "blue" ? "green" : "blue";
 }
 
 function stopColor() {
