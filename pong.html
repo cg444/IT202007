@@ -15,7 +15,6 @@
         var ballSpeed = 2;
         var paddleSpeed = 2;
         var drawables = [];
-        var randomColor = Math.floor(Math.random()*16777215).toString(16);
         // Key Codes
         var W = 87;
         var S = 83;
@@ -49,6 +48,13 @@
                 loop = window.setInterval(gameLoop, 16); //16ms
                 canvas.focus();
             }
+        }
+        function makeRandomColor(){
+            var c = '';
+            while (c.length < 7) {
+                c += (Math.random()).toString(16).substr(-6).substr(-1)
+            }
+            return '#'+c;
         }
         function resetBall() {
             ball.x = canvas.width / 2 - ball.w / 2;
@@ -187,13 +193,13 @@
             // Bounce the ball off the paddles
             if (ball.y + ball.h / 2 >= leftPaddle.y && ball.y + ball.h / 2 <= leftPaddle.y + leftPaddle.h) {
                 if (ball.x <= leftPaddle.x + leftPaddle.w) {
-                    ball.c = randomColor;
+                    ball.c = makeRandomColor();
                     bounceBall();
                 }
             }
             if (ball.y + ball.h / 2 >= rightPaddle.y && ball.y + ball.h / 2 <= rightPaddle.y + rightPaddle.h) {
                 if (ball.x + ball.w >= rightPaddle.x) {
-                    ball.c = randomColor;
+                    ball.c = makeRandomColor();
                     bounceBall();
                 }
             }
