@@ -54,7 +54,13 @@
             ball.x = canvas.width / 2 - ball.w / 2;
             ball.y = canvas.height / 2 - ball.w / 2;
             // Modify the ball object to have two speed properties, one for X and one for Y
-            ball.sX = ballSpeed * rBallCount;
+            if (rBallCount = 0){
+                ballSpeed = ballSpeed;
+            } else {
+                ballSpeed = ballSpeed * rBallCount;
+            }
+
+            ball.sX = ballSpeed ;
             ball.sY = ballSpeed / 2;
 
             // Randomize initial direction
