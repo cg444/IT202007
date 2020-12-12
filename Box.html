@@ -5,6 +5,19 @@
     <title>Box Game</title>
 </head>
 <body>
+<button onclick="stopColor()">Stop Toggling</button>
+<button onclick="myVar = setInterval(setColor, 300);">Start Toggling</button>
+<script>
+    var myVar = setInterval(setColor, 300);
+
+    function setColor() {
+        var x = document.body;
+        x.style.backgroundColor = x.style.backgroundColor == "yellow" ? "pink" : "yellow";
+    }
+
+    function stopColor() {
+        clearInterval(myVar);
+    }
 <canvas id="box" width="600" height="400" style="border: 1px solid black;"></canvas>
 
 <script src="box.js"></script>

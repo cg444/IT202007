@@ -25,6 +25,11 @@ var targetX = 0;
 var targetY = 0;
 var targetLength = 25;
 
+//Properties of the time square
+var timeSqX = 0;
+var timeSqY = 0;
+var timeSqLength = 0;
+
 // Determine if number a is within the range b to c (exclusive)
 function isWithin(a, b, c) {
     return (a > b && a < c);
@@ -99,6 +104,17 @@ function startGame() {
     // Kick off the draw loop
     draw();
 }
+// Toggle background colors
+var myVar = setInterval(setColor, 300);
+
+function setColor() {
+    var x = document.body;
+    x.style.backgroundColor = x.style.backgroundColor == "yellow" ? "pink" : "yellow";
+}
+
+function stopColor() {
+    clearInterval(myVar);
+}
 
 // Show the game over screen
 function endGame() {
@@ -116,6 +132,10 @@ function endGame() {
 function moveTarget() {
     targetX = Math.round(Math.random() * canvas.width - targetLength);
     targetY = Math.round(Math.random() * canvas.height - targetLength)
+}
+function moveTimeSquare() {
+    timeSqX = Math.round(Math.random() * canvas.width - targetLength);
+    timeSqY = Math.round(Math.random() * canvas.height - targetLength)
 }
 
 // Clear the canvas
