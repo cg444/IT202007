@@ -1,27 +1,12 @@
-<html>
-<head>
-    <style>
-        #center{
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            align-content:center;
-            text-align:center;
+<canvas id="canvas" width="600" height="400" tabindex="1"></canvas>
+<style>  #canvas {
+    width: 600px;
+    height: 400px;
+    border: 1px solid black;
+} </style>
 
-            height:99%;
-            padding:0px;
-        }
-        canvas, body{
-            padding: 0px;
-            margin:0px;
-        }
-    </style>
-</head>
-<body>
-<div id="center">
-    <canvas id="canvas" width="550px" height="550px"></canvas>
-</div>
-<span id="endGame"></span>
+
+
 <script>
     // Canvas Pong
     var canvas = document.getElementById('canvas');
@@ -340,5 +325,3 @@
     menu();
     canvas.focus();
 </script>
-</body>
-</html>
