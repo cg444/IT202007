@@ -1,14 +1,6 @@
-<canvas id="canvas" width="600" height="400" tabindex="1"></canvas>
-<style>  #canvas {
-    width: 600px;
-    height: 400px;
-    border: 1px solid black;
-} </style>
-
-
-
 <script>
     // Canvas Pong
+
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
@@ -80,33 +72,10 @@
     }
 
     // Bounce the ball off of a paddle
-    function bounceBallLeft() {
+    function bounceBall() {
         // Increase and reverse the X speed
-        if (ball.sX > 0 ) {
-            if (leftScore < rightScore)
-                ball.sX += 1;
-            // Add some "spin"
-            if (keys.UP) {
-                ball.sY -= 1;
-            } else if (keys.DOWN) {
-                ball.sY += 1;
-            }
-        } else {
-            ball.sX -= 1;
-            // Add some "spin"
-            if (keys.W) {
-                ball.sY -= 1;
-            } else if (keys.S) {
-                ball.sY += 1
-            }
-        }
-        ball.sX *= -1;
-    }
-    function bounceBallRight() {
-        // Increase and reverse the X speed
-        if (ball.sX > 0 ) {
-            if (rightScore < leftScore)
-                ball.sX += 1;
+        if (ball.sX > 0) {
+            ball.sX += 1;
             // Add some "spin"
             if (keys.UP) {
                 ball.sY -= 1;
@@ -125,45 +94,7 @@
         ball.sX *= -1;
     }
 
-
-    function leftPaddleAdjust() {
-        let sizeOffset = (rightScore - leftScore) * 0.1;
-        leftPaddle.h = Math.max((paddleHeight * (sizeOffset+1)),paddleHeight); }
-
-    function rightPaddleAdjust() {
-        let sizeOffset = (leftScore - rightScore)* 0.1;
-        rightPaddle.h = Math.max((paddleHeight * (sizeOffset+1)),paddleHeight); }
-
-    function PaddleColour(){
-        if (leftScore > rightScore){
-            leftPaddle.c = '#daa520'; }
-
-        if (leftScore < rightScore){
-            leftPaddle.c = '#c0c0c0'} ;
-
-        if (rightScore > leftScore){
-            rightPaddle.c = '#daa520'; }
-
-        if (rightScore < leftScore){
-            rightPaddle.c = '#c0c0c0'; }
-
-        if (leftScore == rightScore) {
-            leftPaddle.c = '#E2B0CD'
-            rightPaddle.c = '#E2B0CD'; } }
-
-    /*function rightPaddleColour(){
-        if (rightScore > leftScore){
-            rightPaddle.c = '#daa520'; }
-        if (rightScore < leftScore){
-            rightPaddle.c = '#c0c0c0'} ;
-        if (leftScore == rightScore) {
-            rightPaddle.c = '#E2B0CD'; }  } */
-
-
-    function ballColour(){
-        if (leftScore > 6 || rightScore > 6){
-            ball.c = '#ff0000'; }  }
-
+    // Listen for keydown events
     canvas.addEventListener('keydown', function(e) {
         if (e.keyCode === W) {
             keys.W = true;
@@ -276,29 +207,21 @@
         // Bounce the ball off the paddles
         if (ball.y + ball.h/2 >= leftPaddle.y && ball.y + ball.h/2 <= leftPaddle.y + leftPaddle.h) {
             if (ball.x <= leftPaddle.x + leftPaddle.w) {
-                bounceBallLeft();
+                bounceBall();
             }
         }
         if (ball.y + ball.h/2 >= rightPaddle.y && ball.y + ball.h/2 <= rightPaddle.y + rightPaddle.h) {
             if (ball.x + ball.w >= rightPaddle.x) {
-                bounceBallRight();
+                bounceBall();
             }
         }
         // Score if the ball goes past a paddle
         if (ball.x < leftPaddle.x) {
             rightScore++;
-            PaddleColour();
-            leftPaddleAdjust();
-            rightPaddleAdjust();
-            ballColour();
             resetBall();
             ball.sX *= -1;
         } else if (ball.x + ball.w > rightPaddle.x + rightPaddle.w) {
             leftScore++;
-            PaddleColour();
-            leftPaddleAdjust();
-            rightPaddleAdjust();
-            ballColour();
             resetBall();
             ball.sX *= -1;
         }
