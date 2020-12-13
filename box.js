@@ -107,7 +107,10 @@ function startGame() {
 // Toggle background colors
 var myVar = setInterval(setColor, 1000);
 
-
+function setColor() {
+    var x = document.body;
+    x.style.backgroundColor = x.style.backgroundColor == "blue" ? "green" : "blue";
+}
 
 function stopColor() {
     clearInterval(myVar);
@@ -186,11 +189,7 @@ function draw() {
             moveTarget();
             // Increase the score
             score++;
-            // Change Back ground color
-            function setColor() {
-                var x = document.body;
-                x.style.backgroundColor = x.style.backgroundColor == "blue" ? "green" : "blue";
-            }
+            //
         }
 
     }
