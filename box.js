@@ -189,7 +189,8 @@ function draw() {
             moveTarget();
             // Increase the score
             score++;
-            //
+            //Increase size of square
+            sideLength+=5;
         }
 
     }
