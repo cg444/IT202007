@@ -216,7 +216,7 @@ function draw() {
     if (score==0) {
         speed = 6;
     } else if (score%5 == 0 && speed <= speedCheck){
-        speed+=1
+        speed+=10
     }
     if (speedCheck < speed){
         speedCheck = speed;
