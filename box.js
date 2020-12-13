@@ -173,6 +173,15 @@ function draw() {
     if (x + sideLength > canvas.width) {
         x = canvas.width - sideLength;
     }
+    //Collide with TimeSquare
+    if (isWithin(timeSqX, x, x + timeSqLength) || isWithin(timeSqX + timeSqLength, x, x + timeSqLength)) { // X
+        if (isWithin(timeSqY, y, y + timeSqLength) || isWithin(timeSqY + timeSqLength, y, y + timeSqLength)) { // Y
+            // Respawn the target
+            moveTimeSquare();
+            // Increase the countdown
+            countdown+=5;
+        }
+    }
     // Collide with the target
     if (isWithin(targetX, x, x + sideLength) || isWithin(targetX + targetLength, x, x + sideLength)) { // X
         if (isWithin(targetY, y, y + sideLength) || isWithin(targetY + targetLength, y, y + sideLength)) { // Y
@@ -181,6 +190,7 @@ function draw() {
             // Increase the score
             score++;
         }
+
     }
     // Draw the square
     context.fillStyle = '#FF0000';
