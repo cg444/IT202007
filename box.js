@@ -28,7 +28,7 @@ var targetLength = 25;
 //Properties of the time square
 var timeSqX = 0;
 var timeSqY = 0;
-var timeSqLength = 0;
+var timeSqLength = 25;
 
 // Determine if number a is within the range b to c (exclusive)
 function isWithin(a, b, c) {
@@ -198,6 +198,9 @@ function draw() {
     // Draw the target
     context.fillStyle = '#00FF00';
     context.fillRect(targetX, targetY, targetLength, targetLength);
+    //Draw the TimeSquare
+    context.fillStyle = '#0000FF';
+    context.fillRect(timeSqX, timeSqY, timeSqLength, timeSqLength);
     // Draw the score and time remaining
     context.fillStyle = '#000000';
     context.font = '24px Arial';
