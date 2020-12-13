@@ -174,8 +174,8 @@ function draw() {
         x = canvas.width - sideLength;
     }
     //Collide with TimeSquare
-    if (isWithin(timeSqX, x, x + timeSqLength) || isWithin(timeSqX + timeSqLength, x, x + timeSqLength)) { // X
-        if (isWithin(timeSqY, y, y + timeSqLength) || isWithin(timeSqY + timeSqLength, y, y + timeSqLength)) { // Y
+    if (isWithin(timeSqX, x, x + sideLength) || isWithin(timeSqX + timeSqLength, x, x + sideLength)) { // X
+        if (isWithin(timeSqY, y, y + sideLength) || isWithin(timeSqY + timeSqLength, y, y + timeSqLength)) { // Y
             // Respawn the target
             moveTimeSquare();
             // Increase the countdown
