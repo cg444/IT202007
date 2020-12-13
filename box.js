@@ -180,6 +180,8 @@ function draw() {
             moveTimeSquare();
             // Increase the countdown
             countdown+=5;
+            //Increase size of square
+            sideLength-=5;
         }
     }
     // Collide with the target
