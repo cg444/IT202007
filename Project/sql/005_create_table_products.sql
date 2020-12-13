@@ -11,3 +11,4 @@ CREATE TABLE Products
     primary key (id),
     foreign key (user_id) references Users (id)
 
+)
