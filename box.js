@@ -212,8 +212,14 @@ function draw() {
     context.fillText('Score: ' + score, 10, 24);
     context.fillText('Time Remaining: ' + countdown, 10, 50);
     //speed increase at set times
-    if (score%5 == 0) {
-        speed++;
+    var speedCheck = 6;
+    if (score==0) {
+        speed = 6;
+    } else if (score%5 == 0 && speed <= speedCheck){
+        speed+=1
+    }
+    if (speedCheck < speed){
+        speedCheck = speed;
     }
     // End the game or keep playing
     if (countdown <= 0) {
