@@ -15,7 +15,7 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
     <h3>Create Cart</h3>
     <form method="POST">
-    <select name="product_id" value="<?php echo $results["product_id"];?>" >
+    <select name="product_id" value="<?php echo $result["product_id"];?>" >
             <option value="-1">None</option>
             <?php foreach ($products as $product): ?>
                 <option value="<?php safer_echo($result["product_id"]); ?>" <?php echo ($result["product_id"] == $product["id"] ? 'selected="selected"' : ''); ?>
