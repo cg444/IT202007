@@ -14,26 +14,28 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <h3>Create Cart</h3>
     <form method="POST">
-    <select name="product_id" value="<?php echo $r["product_id"];?>" >
+        <select name="product_id" value="<?php echo $result["product_id"];?>" >
             <option value="-1">None</option>
             <?php foreach ($products as $product): ?>
                 <option value="<?php safer_echo($product["name"]); ?>"
                 ><?php safer_echo($product["name"]); ?></option>
             <?php endforeach; ?>
         </select>
-
+        <div class="form-group">
             <label>Quantity</label>
             <input type="number" min="1" name="quantity"/>
+        </div>
+        <div class="form-group">
             <label>Price</label>
             <input type="number" min="1" name="price"/>
-            <input type="submit" name="save" value="Create"/>
+        </div>
+        <input type="submit" name="save" value="Create"/>
     </form>
-
 
 <?php
 if (isset($_POST["save"])) {
-    //TODO add proper validation/checks
     $id = $_POST["product_id"];
+    //TODO add proper validation/checks
     $pr = $_POST["price"];
     $quantity = $_POST["quantity"];
     $user = get_user_id();
@@ -43,8 +45,8 @@ if (isset($_POST["save"])) {
     $r = $stmt->execute([
         ":id"=>$id,
         ":pr"=>$pr,
-		":quantity"=>$quantity,
-		":user"=>$user
+        ":quantity"=>$quantity,
+        ":user"=>$user
     ]);
     if ($r) {
         flash("Created successfully with id: " . $db->lastInsertId());
