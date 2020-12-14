@@ -11,7 +11,7 @@ $db = getDB();
 $stmt = $db->prepare("SELECT id,name from Products LIMIT 10");
 $r = $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$results = [];
+$results = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
     <h3>Create Cart</h3>
     <form method="POST">
