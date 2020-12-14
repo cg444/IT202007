@@ -6,35 +6,45 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 ?>
-    <h3>Create Incubator</h3>
+<?php
+$db = getDB();
+$stmt = $db->prepare("SELECT id,name from Products LIMIT 10");
+$r = $stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+    <h3>Create Cart</h3>
     <form method="POST">
-        <label>Name</label>
-        <input name="name" placeholder="Name"/>
-        <label>Base Rate</label>
-        <input type="number" min="1" name="base_rate"/>
-        <label>Mod Min</label>
-        <input type="number" min="1" name="mod_min"/>
-        <label>Mod Max</label>
-        <input type="number" min="1" name="mod_max"/>
-        <input type="submit" name="save" value="Create"/>
+        <select name="product_id" value="<?php echo $result["product_id"];?>" >
+            <option value="-1">None</option>
+            <?php foreach ($products as $product): ?>
+                <option value="<?php safer_echo($product["name"]); ?>"
+                ><?php safer_echo($product["name"]); ?></option>
+            <?php endforeach; ?>
+        </select>
+
+            <label>Quantity</label>
+            <input type="number" min="1" name="quantity"/>
+            <label>Price</label>
+            <input type="number" min="1" name="price"/>
+            <input type="submit" name="save" value="Create"/>
     </form>
+
 
 <?php
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
-    $name = $_POST["name"];
-    $br = $_POST["base_rate"];
-    $min = $_POST["mod_min"];
-    $max = $_POST["mod_max"];
+    $id = $_POST["product_id"];
+    $pr = $_POST["price"];
+    $quantity = $_POST["quantity"];
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO F20_Incubators (name, base_rate, mod_min, mod_max, user_id) VALUES(:name, :br, :min,:max,:user)");
+    $stmt = $db->prepare("SELECT FROM Products(price) VALUES(:pr)");
+    $stmt = $db->prepare("INSERT INTO Cart (product_id, price, quantity,user_id) VALUES(:id, :pr, :quantity, :user)");
     $r = $stmt->execute([
-        ":name" => $name,
-        ":br" => $br,
-        ":min" => $min,
-        ":max" => $max,
-        ":user" => $user
+        ":id"=>$id,
+        ":pr"=>$pr,
+        ":quantity"=>$quantity,
+        ":user"=>$user
     ]);
     if ($r) {
         flash("Created successfully with id: " . $db->lastInsertId());
