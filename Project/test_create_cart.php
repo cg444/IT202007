@@ -15,10 +15,10 @@ $result = [];
 ?>
     <h3>Create Cart</h3>
     <form method="POST">
-        <select name="product_id" value="<?php echo $result['name'];?>" >
+        <select name="product_id" value="<?php echo $result["product_id"];?>" >
             <option value="-1">None</option>
             <?php foreach ($products as $product): ?>
-                <option value="<?php safer_echo($product['product_id']); ?>"
+                <option value="<?php safer_echo($product["product_id"]); ?>"
                 ><?php safer_echo($product["name"]); ?></option>
             <?php endforeach; ?>
         </select>
