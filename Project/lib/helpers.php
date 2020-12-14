@@ -72,7 +72,7 @@ function getURL($path) {
     if (substr($path,0,1) == "/") {
         return $path;
     }
-    return $_SERVER["CONTEXT_PREFIX"]. "/IT202-007/Project/$path";
+    return $_SERVER["CONTEXT_PREFIX"]. "/IT202007/Project/$path";
 }
 //end flash
 ?>
