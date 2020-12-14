@@ -24,6 +24,7 @@ if (isset($_POST["search"]) && !empty($query)) {
     }
 }
 ?>
+<h3>List Product</h3>
 <form method="POST">
     <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
     <input type="submit" value="Search" name="search"/>
@@ -60,3 +61,4 @@ if (isset($_POST["search"]) && !empty($query)) {
         <p>No results</p>
     <?php endif; ?>
 </div>
+<?php require(__DIR__ . "/partials/flash.php");
