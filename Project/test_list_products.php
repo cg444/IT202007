@@ -9,6 +9,7 @@ if (!has_role("Admin")) {
 <?php
 $query = "";
 $results = [];
+
 if (isset($_POST["query"])) {
     $query = $_POST["query"];
 }
@@ -26,9 +27,13 @@ if (isset($_POST["search"]) && !empty($query)) {
 ?>
 <h3>List Product</h3>
 <form method="POST">
-    <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
+    <input name="query" placeholder="Search Name" value="<?php safer_echo($query); ?>"/>
     <input type="submit" value="Search" name="search"/>
 </form>
+    <form method="POST">
+        <input name="query" placeholder="Search Value" value="<?php safer_echo($query); ?>"/>
+        <input type="submit" value="Search" name="search"/>
+    </form>
 <div class="results">
     <?php if (count($results) > 0): ?>
         <div class="list-group">
