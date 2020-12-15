@@ -25,21 +25,6 @@ if (isset($_POST["search"]) && !empty($query)) {
     }
 }
 
-if (isset($_POST["pquery"])) {
-    $pquery = $_POST["pquery"];
-}
-if (isset($_POST["search"]) && !empty($pquery)) {
-    $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE price = :price LIMIT 10");
-    $r = $stmt->execute([":price" => "%$pquery%"]);
-    if ($r) {
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    else {
-        flash("There was a problem fetching the results");
-    }
-}
-
 ?>
 <h3>List Product</h3>
 <form method="POST">
