@@ -9,14 +9,13 @@ if (!has_role("Admin")) {
 <?php
 $query = "";
 $results = [];
-$price = 0;
 
 if (isset($_POST["query"])) {
     $query = $_POST["query"];
 }
 if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id from Products WHERE name like :q LIMIT 10");
+    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE name OR category like :q LIMIT 10");
     $r = $stmt->execute([":q" => "%$query%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +32,7 @@ if (isset($_POST["search"]) && !empty($query)) {
     <div>
 </form>
     <form method="POST">
-        <input name="query" placeholder="Search Value" value="<?php safer_echo($query); ?>"/>
+        <input name="query" placeholder="Search Value" value="<?php safer_echo($price); ?>"/>
         <input type="submit" value="Search" name="search"/>
     </form>
     </div>
