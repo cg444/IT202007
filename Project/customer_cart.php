@@ -8,8 +8,8 @@ if (!is_logged_in()) {
 ?>
 
 <?php
-$userID = get_user_id();
 $cartID = 0;
+$userID = get_user_id();
 $productID = 0;
 $results = [];
 $quantity = 0;
