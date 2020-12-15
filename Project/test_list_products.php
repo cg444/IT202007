@@ -31,11 +31,6 @@ if (isset($_POST["search"]) && !empty($query)) {
     <input type="submit" value="Search" name="search"/>
     <div>
 </form>
-    <form method="POST">
-        <input name="query" placeholder="Search Value" value="<?php safer_echo($price); ?>"/>
-        <input type="submit" value="Search" name="search"/>
-    </form>
-    </div>
 
 <div class="results">
     <?php if (count($results) > 0): ?>
