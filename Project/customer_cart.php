@@ -102,7 +102,7 @@ else {
             <input type="submit" name="clearAll" value="Empty Cart"/>
     </form>
 <?php else: ?>
-    <p>Your cart is empty, but it doesn't have to be that way.</p>
+    <p>Your cart is empty.</p>
 <?php endif; ?>
 
 <?php require(__DIR__ . "/partials/flash.php");

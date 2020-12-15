@@ -11,7 +11,7 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT name, price, quantity, description, user_id, Users.username FROM Products JOIN Users on Products.user_id = Users.id where Products.id = :id");
+    $stmt = $db->prepare("SELECT name, price, quantity, description, user_id, Users.username, category FROM Products JOIN Users on Products.user_id = Users.id where Products.id = :id");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
@@ -31,6 +31,7 @@ if (isset($id)) {
                 <div>Price: <?php safer_echo($result["price"]); ?></div>
                 <div>Quantity: <?php safer_echo($result["quantity"]); ?></div>
                 <div>Description <?php safer_echo($result["description"]); ?></div>
+                <div>Category <?php safer_echo($result["category"]); ?></div>
             </div>
         </div>
     </div>
