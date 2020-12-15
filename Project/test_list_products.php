@@ -52,6 +52,8 @@ if (isset($_POST["search"]) && !empty($query)) {
                     <div>
                         <div>Description:</div>
                         <div><?php safer_echo($r["description"]); ?></div>
+                    </div>
+                    <div>
                         <div>Category:</div>
                         <div><?php safer_echo($r["Category"]); ?></div>
                     </div>
