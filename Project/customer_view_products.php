@@ -51,7 +51,7 @@ if(isset($_POST["quantity"])) {
                 <p>Stats</p>
                 <div>Price: <?php safer_echo($result["price"]); ?></div>
                 <?php if ($result["quantity"] < 10): ?>
-                        <div><?php safer_echo("Only " . $result["quantity"] . " left in stock, order soon."); ?></div>
+                        <div><?php safer_echo("Only " . $result["quantity"] . " left, order now!"); ?></div>
                    <?php endif;?>
                 <div>Description: <?php safer_echo($result["description"]); ?></div></p>
                     <div class="form-group">
@@ -62,7 +62,5 @@ if(isset($_POST["quantity"])) {
                 </form>
         </div>
     </div>
-<?php else: ?>
-    <p>Error looking up id...</p>
 <?php endif; ?>
 <?php require(__DIR__ . "/partials/flash.php");
