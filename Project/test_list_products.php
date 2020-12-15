@@ -9,7 +9,7 @@ if (!has_role("Admin")) {
 <?php
 $query = "";
 $results = [];
-
+$pquery = 0;
 if (isset($_POST["query"])) {
     $query = $_POST["query"];
 }
@@ -24,12 +24,32 @@ if (isset($_POST["search"]) && !empty($query)) {
         flash("There was a problem fetching the results");
     }
 }
+
+if (isset($_POST["pquery"])) {
+    $pquery = $_POST["pquery"];
+}
+if (isset($_POST["search"]) && !empty($pquery)) {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE price = :price LIMIT 10");
+    $r = $stmt->execute([":pquery" => "%$query%"]);
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("There was a problem fetching the results");
+    }
+}
+
 ?>
 <h3>List Product</h3>
 <form method="POST">
     <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
     <input type="submit" value="Search" name="search"/>
 </form>
+    <form method="POST">
+        <input name="pquery" placeholder="Search" value="<?php safer_echo($pquery); ?>"/>
+        <input type="submit" value="Search" name="search"/>
+    </form>
 
 <div class="results">
     <?php if (count($results) > 0): ?>
