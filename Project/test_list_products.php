@@ -9,6 +9,7 @@ if (!has_role("Admin")) {
 <?php
 $query = "";
 $results = [];
+$price = 0;
 
 if (isset($_POST["query"])) {
     $query = $_POST["query"];

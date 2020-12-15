@@ -16,6 +16,8 @@ if (!has_role("Admin")) {
         <input type="number" min="0" name="quantity"/>
         <label>Description</label>
         <input type="text" name="description"/>
+        <label>Category</label>
+        <input type="text" name="category"/>
 
         <input type="submit" name="save" value="Create"/>
     </form>
@@ -24,21 +26,21 @@ if (!has_role("Admin")) {
 if(isset($_POST["save"])){
     //TODO add proper validation/checks
     $name = $_POST["name"];
-    // $state = $_POST["state"];
     $pr = $_POST["price"];
     $quantity = $_POST["quantity"];
     $desc = $_POST["description"];
-    //$nst = date('Y-m-d H:i:s');//calc
+    $category = $_POST["category"];
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Products (name, price, quantity, description, user_id) VALUES(:name, :pr, :quantity, :desc, :user)");
+    $stmt = $db->prepare("INSERT INTO Products (name, price, quantity, description, user_id, category) VALUES(:name, :pr, :quantity, :desc, :user, :category)");
     $r = $stmt->execute([
         ":name"=>$name,
         ":pr"=>$pr,
         ":quantity"=>$quantity,
         ":desc"=>$desc,
         //":nst"=>$nst,
-        ":user"=>$user
+        ":user"=>$user,
+        ":category"=>$category
     ]);
     if($r){
         flash("Created successfully with id: " . $db->lastInsertId());
