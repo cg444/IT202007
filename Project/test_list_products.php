@@ -15,7 +15,7 @@ if (isset($_POST["query"])) {
 }
 if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE name OR price like :q LIMIT 10");
+    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE name OR price like :q");
     $r = $stmt->execute([":q" => "%$query%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
