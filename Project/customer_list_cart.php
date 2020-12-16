@@ -57,7 +57,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No results</p>
+            <?php safer_echo($results[])
         <?php endif; ?>
     </div>
 <?php require(__DIR__ . "/partials/flash.php");
