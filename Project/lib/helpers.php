@@ -68,7 +68,7 @@ function getMessages() {
     return array();
 }
 
-function calcPrice($id, $quantity){
+function subTotal($id, $quantity){
 
     $db = getDB();
     $stmt = $db->prepare("SELECT price FROM Products where id = :id");
