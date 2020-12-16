@@ -100,11 +100,10 @@ if ($r) {
 
 
 
-    <h1>PRODUCTS</h1>
+    <h3>PRODUCTS</h3>
     <div class="row" style= "margin-left: 4em;">
         <?php if (count($results) > 0): ?>
             <?php foreach ($results as $r): ?>
-                <div   class="card" style="width: 20rem; margin: 1em;">
                     <div class="card-body">
                         <a href = "customer_view_products.php?id=<?php safer_echo($r['id']); ?>" <h5 class="card-title"><?php safer_echo($r["name"]); ?></h5></a>
                         <h6 class="card-title"><?php safer_echo($r["price"]); ?></h6>
@@ -116,7 +115,6 @@ if ($r) {
                             <a href="test_edit_products.php?id=<?php safer_echo($r['id']); ?>" class="btn btn-primary">Edit</a>
                         <?php endif; ?>
                     </div>
-                </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
