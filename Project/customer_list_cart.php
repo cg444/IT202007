@@ -1,5 +1,10 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
-
+<?php
+if (!is_logged_in()) {
+    flash("You must be logged in to access this page");
+    die(header("Location: login.php"));
+}
+?>
 <?php
 $query = "";
 $id=get_user_id();
@@ -9,7 +14,7 @@ if (isset($_POST["query"])) {
 }
 if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT product_id, name, Cart.id, Cart.quantity From Cart JOIN Products on Cart.product_id = Products.id where Cart.user_id=:user_id and Products.name like :q LIMIT 10");
+    $stmt = $db->prepare("SELECT product_id, name, Cart.id, Cart.quantity From Cart JOIN Products on Cart.product_id = Products.id where Cart.user_id=:user_id and Products.name like :q LIMIT 10 SELECT price From Products");
     $r = $stmt->execute([
         ":q" => "%$query%",
         ":user_id"=> $id,
@@ -47,8 +52,12 @@ if (isset($_POST["search"]) && !empty($query)) {
                             <div><?php safer_echo($r["quantity"]); ?></div>
                         </div>
                         <div>
-                            <a type="button" href="edit_cart.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                            <a type="button" href="view_cart.php?id=<?php safer_echo($r['id']); ?>">View</a>
+                            <div>Subtotal:</div>
+                            <div><?php safer_echo($r["quantity"*"price"]); ?></div>
+                        </div>
+                        <div>
+                            <a type="button" href="customer_edit_cart.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
+                            <a type="button" href="customer_view_cart.php?id=<?php safer_echo($r['id']); ?>">View</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
