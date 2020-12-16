@@ -49,7 +49,8 @@ $result = [];
 if (isset($CartID)) {
     $CartID = $_GET["id"];
     $db = getDB();
-    $stmt = $db->prepare("SELECT * FROM Cart where id = :id DELETE FROM Cart where quantity = 0");
+    $stmt = $db->prepare("SELECT * FROM Cart where id = :id");
+    $stmt = $db->prepare("DELETE FROM Cart where quantity = 0");
     $r = $stmt->execute([":id" => $CartID]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 }
