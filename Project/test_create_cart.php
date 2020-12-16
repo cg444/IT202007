@@ -18,8 +18,8 @@ $result = [];
         <select name="product_id" value="<?php echo $result["product_id"];?>" >
             <option value="-1">None</option>
             <?php foreach ($products as $product): ?>
-                <option value="<?php safer_echo($product["name"]); ?>"
-                ><?php safer_echo($product["name"]); ?></option>
+                <option value="<?php safer_echo($product["id"]); ?>"
+                ><?php safer_echo($product["id"]); ?></option>
             <?php endforeach; ?>
         </select>
 
