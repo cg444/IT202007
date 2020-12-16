@@ -105,7 +105,6 @@ if ($r) {
         <?php if (count($results) > 0): ?>
             <?php foreach ($results as $r): ?>
                 <div   class="card" style="width: 20rem; margin: 1em;">
-                    <img src="photos/Y2K.png" class="card-img-top" alt="...">
                     <div class="card-body">
                         <a href = "ViewProduct.php?id=<?php safer_echo($r['id']); ?>" <h5 class="card-title"><?php safer_echo($r["name"]); ?></h5></a>
                         <h6 class="card-title"><?php safer_echo($r["price"]); ?></h6>
