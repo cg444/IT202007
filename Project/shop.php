@@ -23,15 +23,15 @@ if (has_role("Admin")) {
     }
 }else{
     if (isset($_POST["sort"])) {
-        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0 AND visibility = 1  ORDER BY price LIMIT 10");
+        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0 AND visibility = 0  ORDER BY price LIMIT 10");
         $r = $stmt->execute();
     }
     elseif (isset($_POST["category"])) {
         $cat = $_POST["category"];
-        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0  AND category = :q AND visibility = 1 LIMIT 10");
+        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0  AND category = :q AND visibility = 0 LIMIT 10");
         $r = $stmt->execute( [":q" => $cat]);
     }else{
-        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0  AND visibility = 1 LIMIT 10");
+        $stmt = $db->prepare("SELECT id,name, price, description FROM Products WHERE quantity > 0  AND visibility = 0 LIMIT 10");
         $r = $stmt->execute();
     }
 }
