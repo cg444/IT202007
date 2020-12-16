@@ -19,7 +19,7 @@ $result = [];
             <option value="-1">None</option>
             <?php foreach ($products as $product): ?>
                 <option value="<?php safer_echo($product["id"]); ?>"
-                ><?php safer_echo($product["id"]); ?></option>
+                ><?php safer_echo($product["name"]); ?></option>
             <?php endforeach; ?>
         </select>
 
