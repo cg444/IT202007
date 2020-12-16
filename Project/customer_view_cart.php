@@ -17,7 +17,6 @@ $result = [];
 if (isset($id)) {
     $db = getDB();
     $stmt = $db->prepare("SELECT Cart.price, Products.name,Products.description, Cart.quantity from Cart join Products on Cart.product_id = product_id where Cart.id = :id");
-    $stmt = $db->prepare("SELECT price from Cart");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
