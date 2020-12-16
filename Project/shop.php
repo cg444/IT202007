@@ -85,10 +85,10 @@ if ($r) {
         <form method="POST" style="float: right; margin-top: 3em; display: inline-flex; margin-right: 2em;" id = "form1">
             <button style= "margin-right: 2em;"type="submit" name="sort" value="sort"  class="btn btn-primary">low-high</button>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Categories
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
                     <?php foreach ($category as $c): ?>
                         <button type="submit" class="dropdown-item" name = "category" value = "<?php echo $c["category"];?>" ><?php safer_echo($c["category"]);?></button>
                     <?php endforeach; ?>
@@ -106,14 +106,14 @@ if ($r) {
             <?php foreach ($results as $r): ?>
                 <div   class="card" style="width: 20rem; margin: 1em;">
                     <div class="card-body">
-                        <a href = "ViewProduct.php?id=<?php safer_echo($r['id']); ?>" <h5 class="card-title"><?php safer_echo($r["name"]); ?></h5></a>
+                        <a href = "customer_view_products.php?id=<?php safer_echo($r['id']); ?>" <h5 class="card-title"><?php safer_echo($r["name"]); ?></h5></a>
                         <h6 class="card-title"><?php safer_echo($r["price"]); ?></h6>
                         <p class="card-text"><?php safer_echo($r["description"]); ?></p>
                         <?php if (is_logged_in()): ?>
                             <button form = "form1" type="button" onclick="addToCart(<?php echo $r["id"];?>);" class="btn btn-primary btn-lg">Add to Cart</button>
                         <?php endif;?>
                         <?php if (has_role("Admin")): ?>
-                            <a href="EditProduct.php?id=<?php safer_echo($r['id']); ?>" class="btn btn-primary">Edit</a>
+                            <a href="test_edit_products.php?id=<?php safer_echo($r['id']); ?>" class="btn btn-primary">Edit</a>
                         <?php endif; ?>
                     </div>
                 </div>
