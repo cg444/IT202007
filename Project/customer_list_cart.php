@@ -1,65 +1,63 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-//we'll put this at the top so both php block have access to it
-if (isset($_GET["id"])) {
-    $productID = $_GET["id"];
-    $userID = get_user_id();
-    $price = 0;
+if (!is_logged_in()) {
+    flash("You must be logged in to access this page");
+    die(header("Location: login.php"));
 }
 ?>
 <?php
-//fetching
-$result = [];
-if (isset($productID)) {
-    $db = getDB();
-    $stmt = $db->prepare("SELECT name, price, quantity, description, user_id, Users.username FROM Products JOIN Users on Products.user_id = Users.id where Products.id = :id");
-    $r = $stmt->execute([":id" => $productID]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-        $e = $stmt->errorInfo();
-        flash($e[2]);
-    }
+$query = "";
+$id=get_user_id();
+$results = [];
+if (isset($_POST["query"])) {
+    $query = $_POST["query"];
 }
-?>
-
-<?php
-if(isset($_POST["quantity"])) {
+if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $price = $_POST["price"];
-    echo $price;
-    $stmt = $db->prepare ("INSERT into Cart (`product_id`, `user_id`, `quantity`, `price`) VALUES (:productID, :userID, :quantity, :price) on duplicate key update quantity = :quantity");
+    $stmt = $db->prepare("SELECT product_id, name, Cart.id, Cart.quantity From Cart JOIN Products on Cart.product_id = Products.id where Cart.user_id=:user_id and Products.name like :q LIMIT 10");
     $r = $stmt->execute([
-        ":productID" => $productID,
-        ":userID" => $userID,
-        ":quantity" => $_POST["quantity"],
-        ":price" => $price
+        ":q" => "%$query%",
+        ":user_id"=> $id,
     ]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-        $e = $stmt->errorInfo();
-        flash($e[2]);
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("There was a problem fetching the results " . var_export($stmt->errorInfo(), true));
     }
 }
 ?>
-<?php if (isset($result) && !empty($result)): ?>
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title"><?php safer_echo($result["name"]); ?></h5>
-
-            <div>Price: <?php safer_echo($result["price"]); ?></div>
-            <?php if ($result["quantity"] < 10): ?>
-                <div><?php safer_echo("Only " . $result["quantity"] . " left in stock, order soon."); ?></div>
-            <?php endif;?>
-            <div>Description: <?php safer_echo($result["description"]); ?></div></p>
-            <form method="POST">
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" min="0" name="quantity" value="<?php echo $result["quantity"]; ?>"/>
-                </div>
-                <input type="submit" name="save" value="Add to Cart"/>
-                <input type="hidden" name="price" value="<?php echo $result["price"]; ?>"/>
-            </form>
-        </div>
+    <h3>List Cart</h3>
+    <form method="POST">
+        <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
+        <input type="submit" value="Search" name="search"/>
+    </form>
+    <div class="results">
+        <?php if (count($results) > 0): ?>
+            <div class="list-group">
+                <?php foreach ($results as $r): ?>
+                    <div class="list-group-item">
+                        <div>
+                            <div>Name:</div>
+                            <div><?php safer_echo($r["name"]); ?></div>
+                        </div>
+                        <div>
+                            <div>Product ID:</div>
+                            <div><?php safer_echo($r["product_id"]); ?></div>
+                        </div>
+                        <div>
+                            <div>Quantity:</div>
+                            <div><?php safer_echo($r["quantity"]); ?></div>
+                        </div>
+                        <div>
+                            <a type="button" href="test_edit_cart.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
+                            <a type="button" href="test_view_cart.php?id=<?php safer_echo($r['id']); ?>">View</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p>No results</p>
+        <?php endif; ?>
     </div>
-<?php endif; ?>
 <?php require(__DIR__ . "/partials/flash.php");
