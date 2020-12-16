@@ -101,7 +101,6 @@ if ($r) {
 
 
     <h3>PRODUCTS</h3>
-    <div class="row" style= "margin-left: 4em;">
         <?php if (count($results) > 0): ?>
             <?php foreach ($results as $r): ?>
                     <div class="card-body">
@@ -117,5 +116,4 @@ if ($r) {
                     </div>
             <?php endforeach; ?>
         <?php endif; ?>
-    </div>
 <?php require_once(__DIR__ . "/partials/flash.php"); ?>
