@@ -1,8 +1,7 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if (!has_role("Admin")) {
-    //this will redirect to login and kill the rest of this script (prevent it from executing)
-    flash("You don't have permission to access this page");
+if (!is_logged_in()) {
+    flash("You must be logged in to access this page");
     die(header("Location: login.php"));
 }
 ?>
@@ -23,11 +22,11 @@ $result = [];
             <?php endforeach; ?>
         </select>
 
-            <label>Quantity</label>
-            <input type="number" min="1" name="quantity"/>
-            <label>Price</label>
-            <input type="number" min="1" name="price"/>
-            <input type="submit" name="save" value="Create"/>
+        <label>Quantity</label>
+        <input type="number" min="1" name="quantity"/>
+        <label>Price</label>
+        <input type="number" min="1" name="price"/>
+        <input type="submit" name="save" value="Create"/>
     </form>
 
 
@@ -44,8 +43,8 @@ if (isset($_POST["save"])) {
     $r = $stmt->execute([
         ":id"=>$id,
         ":pr"=>$pr,
-		":quantity"=>$quantity,
-		":user"=>$user
+        ":quantity"=>$quantity,
+        ":user"=>$user
     ]);
     if ($r) {
         flash("Created successfully with id: " . $db->lastInsertId());
