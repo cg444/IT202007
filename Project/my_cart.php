@@ -46,7 +46,7 @@ if(isset($_POST["update"])){
 }
 if (isset($id)) {
     $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username ,
-    from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
+    (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
      WHERE Users.id = :q LIMIT 10");
 
     $r = $stmt->execute([":q" => $id]);
