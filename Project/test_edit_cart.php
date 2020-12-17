@@ -84,6 +84,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <label>Quantity</label>
         <input type="number" min="0" name="quantity" value="<?php echo $result["quantity"]; ?>"/>
         <input type="submit" name="save" value="Update"/>
+        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
     </form>
 
 
