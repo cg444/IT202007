@@ -45,7 +45,7 @@ if(isset($_POST["update"])){
     }
 }
 if (isset($id)) {
-    $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username ,
+    $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username , Products.price as :price, 
     (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
      WHERE Users.id = :q LIMIT 10");
 
@@ -88,7 +88,7 @@ foreach($results as $a){
                     <tr>
                         <th scope="row"> <p class="card-text"><small class="text-muted"> <?php safer_echo($r["modified"])?></small></p></th>
                         <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
-                        <td>$<?php safer_echo($r["price"])?></td>
+                        <td>$<?php safer_echo($r[":price"])?></td>
                         <td><form method = "POST"  id = "1" style = "display: flex;">
                                 <input  type="number" min="0" name="quantity" value="<?php echo $r["quantity"];?>"/>
                                 <input type="hidden" name="cartId" value="<?php echo $r["id"];?>"/>
