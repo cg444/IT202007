@@ -24,6 +24,8 @@ $result = [];
 
         <label>Quantity</label>
         <input type="number" min="1" name="quantity"/>
+        <label>Price</label>
+        <input type="number" min="1" name="price"/>
         <input type="submit" name="save" value="Create"/>
     </form>
 
@@ -32,12 +34,12 @@ $result = [];
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
     $id = $_POST["product_id"];
-    $pr = 0;
+    $pr = $_POST["price"];
     $quantity = $_POST["quantity"];
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("SELECT (Products.price * Cart.quantity) as :pr FROM Products JOIN Cart ");
-    $stmt = $db->prepare("INSERT INTO Cart (product_id, price, quantity,user_id) VALUES(:id, :pr ,:quantity, :user) on duplicate key update quantity = quantity + :quantity");
+    $stmt = $db->prepare("SELECT FROM Products(price) VALUES(:pr)");
+    $stmt = $db->prepare("INSERT INTO Cart (product_id, price, quantity,user_id) VALUES(:id, :pr, :quantity, :user) on duplicate key update quantity = quantity + :quantity");
     $r = $stmt->execute([
         ":id"=>$id,
         ":pr"=>$pr,
