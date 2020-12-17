@@ -45,8 +45,8 @@ if(isset($_POST["update"])){
     }
 }
 if (isset($id)) {
-    $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username ,
-    (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
+    $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username
+    from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
      WHERE Users.id = :q LIMIT 10");
 
     $r = $stmt->execute([":q" => $id]);
@@ -95,7 +95,7 @@ foreach($results as $a){
                                 <button type="submit" class="btn btn-success" name="update">update</button>
                             </form></td>
                         <td><?php safer_echo($r["description"])?></td>
-                        <td>$<?php safer_echo($r["sub"])?></td>
+                        <td>$<?php safer_echo($r["price"])?></td>
                         <td><button form= "1" type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item">Delete item</button></td>
                     </tr>
                 <?php endforeach; ?>
