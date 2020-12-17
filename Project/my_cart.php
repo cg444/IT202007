@@ -23,10 +23,6 @@ if (isset($_POST["quantity"])){
     }
 
 }
-
-
-
-
 if(isset($_POST["clear"])){
     $stmt = $db->prepare("DELETE FROM Cart where user_id = :uid");
     $r = $stmt->execute([":uid"=>get_user_id()]);
@@ -34,8 +30,6 @@ if(isset($_POST["clear"])){
         flash("Deleted all items from cart", "success");
     }
 }
-
-
 if(isset($_POST["delete"])){
     $stmt = $db->prepare("DELETE FROM Cart where id = :id AND user_id = :uid");
     $r = $stmt->execute([":id"=>$_POST["cartId"], ":uid"=>get_user_id()]);
@@ -43,8 +37,6 @@ if(isset($_POST["delete"])){
         flash("Deleted item from cart", "success");
     }
 }
-
-
 if(isset($_POST["update"])){
     $stmt = $db->prepare("UPDATE Cart set quantity = :q where id = :id AND user_id = :uid");
     $r = $stmt->execute([":id"=>$_POST["cartId"], ":q"=> $_POST["quantity"], ":uid"=> $id]);
@@ -52,7 +44,6 @@ if(isset($_POST["update"])){
         flash("Updated quantity", "success");
     }
 }
-
 if (isset($id)) {
     $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username ,
     (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
