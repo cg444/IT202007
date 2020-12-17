@@ -38,8 +38,8 @@ if (isset($_POST["save"])) {
     $quantity = $_POST["quantity"];
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("SELECT Products.price, Cart.quantity, (Products.price * Cart.quantity) as :pr FROM Products JOIN Cart ");
-    $stmt = $db->prepare("INSERT INTO Cart (product_id, price, quantity,user_id) VALUES(:id, :pr, :quantity, :user) on duplicate key update quantity = quantity + :quantity");
+    $stmt = $db->prepare("SELECT (Products.price * Cart.quantity) as :pr FROM Products JOIN Cart ");
+    $stmt = $db->prepare("INSERT INTO Cart (product_id, price, quantity,user_id) VALUES(:id, :quantity, :user) on duplicate key update quantity = quantity + :quantity");
     $r = $stmt->execute([
         ":id"=>$id,
         ":pr"=>$pr,
