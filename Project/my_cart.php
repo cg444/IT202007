@@ -48,7 +48,7 @@ if(isset($_POST["update"])){
 if (isset($Price)) {
     $Price = 0;
     $db = getDB();
-    $stmt = $db->prepare("SELECT price FROM Products where id = :id");
+    $stmt = $db->prepare("SELECT price FROM Products where id = :id VALUES (:price)");
     $r = $stmt->execute([":price" => $Price]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 }
