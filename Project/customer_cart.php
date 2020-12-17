@@ -22,7 +22,7 @@ if (isset($_POST["save"])) {
     }
 
     $quantity = $_POST["quantity"];
-    $price = calcPrice($product, $quantity);
+    $price = subTotal($product, $quantity);
     $user = get_user_id();
     $db = getDB();
     $stmt = $db->prepare(" INSERT INTO Cart (product_id, quantity, price, user_id ) VALUES(:product_id, :quantity, :price, :user_id)on duplicate key update quantity = quantity + :quantity");
