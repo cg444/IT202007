@@ -98,8 +98,8 @@ foreach($results as $a){
             <?php if (count($results) > 0): ?>
                 <?php foreach ($results as $r): ?>
                     <tr>
-                        <th scope="row"> <img src="..." class="card-img" alt="..."><p class="card-text"><small class="text-muted"> <?php safer_echo($r["modified"])?></small></p></th>
-                        <td><a href = "ViewProduct.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
+                        <th scope="row"> <p class="card-text"><small class="text-muted"> <?php safer_echo($r["modified"])?></small></p></th>
+                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
                         <td>$<?php safer_echo($r["price"])?></td>
                         <td><form method = "POST"  id = "1" style = "display: flex;">
                                 <input " type="number" min="0" name="quantity" value="<?php echo $r["quantity"];?>"/>
@@ -108,7 +108,7 @@ foreach($results as $a){
                             </form></td>
                         <td><?php safer_echo($r["description"])?></td>
                         <td>$<?php safer_echo($r["sub"])?></td>
-                        <td><button form= "1" type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item">Delete item</button></td>
+                        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
