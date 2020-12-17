@@ -69,9 +69,6 @@ $r = $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <h3>Edit Cart</h3>
-    <form method = "POST">
-        <button style= "margin: 1em; float: right;" type="submit" class="btn btn-danger" name="clear">clear cart</button>
-    </form>
     <form method="POST">
         <label>Product</label>
         <select name="id" value="<?php echo $result["id"];?>" >
