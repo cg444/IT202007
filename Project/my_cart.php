@@ -60,13 +60,13 @@ if (isset($id)) {
 $total = 0;
 foreach($results as $a){
     if ($a["sub"]){
-        $total = $a["sub"];
+        $total += $a["sub"];
 
     }
 }
 
 ?>
-<h1>MY CART<h1>
+<h3>MY CART<h3>
         <form method = "POST">
             <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
         </form>
@@ -93,7 +93,7 @@ foreach($results as $a){
                         <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
                         <td>$<?php safer_echo($r["price"])?></td>
                         <td><form method = "POST"  id = "1" style = "display: flex;">
-                                <input " type="number" min="0" name="quantity" value="<?php echo $r["quantity"];?>"/>
+                                <input  type="number" min="0" name="quantity" value="<?php echo $r["quantity"];?>"/>
                                 <input type="hidden" name="cartId" value="<?php echo $r["id"];?>"/>
                                 <button type="submit" class="btn btn-success" name="update">update</button>
                             </form></td>
