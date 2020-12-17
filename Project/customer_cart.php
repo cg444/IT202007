@@ -24,7 +24,6 @@ $result = [];
 
         <label>Quantity</label>
         <input type="number" min="1" name="quantity"/>
-        <label>Price</label>
         <input type="submit" name="save" value="Create"/>
     </form>
 
