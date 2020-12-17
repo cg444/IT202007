@@ -60,7 +60,7 @@ if (isset($id)) {
 $total = 0;
 foreach($results as $a){
     if ($a["sub"]){
-        $total += $a["sub"];
+        $total = $a["sub"];
 
     }
 }
