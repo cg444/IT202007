@@ -77,7 +77,7 @@ foreach($results as $a){
 ?>
 <h1>MY CART<h1>
         <form method = "POST">
-            <button style= "margin: 1em; float: right;" type="submit" class="btn btn-danger" name="clear">clear cart</button>
+            <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
         </form>
         <a href = "checkout.php"> <button style= "margin: 1em; float: right;" type="submit" class="btn btn-success" name="clear">checkout</button> </a>
 
@@ -108,7 +108,7 @@ foreach($results as $a){
                             </form></td>
                         <td><?php safer_echo($r["description"])?></td>
                         <td>$<?php safer_echo($r["sub"])?></td>
-                        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
+                        <td><button form= "1" type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item">Delete item</button></td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
