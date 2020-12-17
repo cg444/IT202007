@@ -53,10 +53,6 @@ if (isset($_POST["search"]) && !empty($query)) {
                             <div><?php safer_echo($r["quantity"]); ?></div>
                         </div>
                         <div>
-                            <div>Subtotal:</div>
-                            <div><?php safer_echo($price); ?></div>
-                        </div>
-                        <div>
                             <a type="button" href="customer_edit_cart.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
                             <a type="button" href="customer_view_cart.php?id=<?php safer_echo($r['id']); ?>">View</a>
                         </div>
