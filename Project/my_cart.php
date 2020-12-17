@@ -67,9 +67,6 @@ foreach($results as $a){
 
 ?>
 <h3>MY CART<h3>
-        <form method = "POST">
-            <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
-        </form>
         <a href = "checkout.php"> <button style= "margin: 1em; float: right;" type="submit" class="btn btn-success" name="clear">checkout</button> </a>
 
         <table class="table table-striped">
@@ -110,4 +107,7 @@ foreach($results as $a){
             <?php endif; ?>
             </tbody>
         </table>
+        <form method = "POST">
+            <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
+        </form>
         <?php require_once(__DIR__ . "/partials/flash.php"); ?>
