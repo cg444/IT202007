@@ -156,7 +156,7 @@ if (isset($_POST["place"])){
 
 <form method = "POST">
     <div class="form-group">
-        <h1> ADDRESS </h1>
+        <h3> ADDRESS </h3>
         <label for="Address">Address</label>
         <input type="text" name="address" class="form-control" id="Address" placeholder="Street Address" required>
     </div>
@@ -178,7 +178,7 @@ if (isset($_POST["place"])){
             <input type="text" name="zip" class="form-control" id="Zip" required>
         </div>
     </div>
-    <h1> PAYMENT METHOD </h1>
+    <h4> PAYMENT METHOD </h4>
     <div class="form-group">
         <select name = "payment" id="PAYMENT" class="form-control" required>
             <option value="visa">Visa</option>
