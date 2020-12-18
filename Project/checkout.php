@@ -142,7 +142,7 @@ if (isset($_POST["place"])){
 
         }
         else{ //if quantitycheck is false
-            flash ("for item: $name, the desired quantity should be less that $originalQ since that is what we have in stock");
+            flash ("$name quantity selected, is greater than our current stock of $originalQ ");
         }
 
 
