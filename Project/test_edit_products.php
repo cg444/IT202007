@@ -1,4 +1,4 @@
-<?php require_once(__DIR__ . "/partials/nav.php"); ?>
+<?php require_once(__DIR__ . "/../../partials/nav.php"); ?>
 <?php
 if (!has_role("Admin")) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
@@ -15,22 +15,23 @@ if(isset($_GET["id"])){
 <?php
 //saving
 if(isset($_POST["save"])){
-    //TODO add proper validation/checks
     $name = $_POST["name"];
+    $cat = $_POST["category"];
+    $pr = $_POST["price"];
     $quantity = $_POST["quantity"];
-    $price = $_POST["price"];
-    $description = $_POST["description"];
+    $desc = $_POST["description"];
     $user = get_user_id();
     $db = getDB();
     if(isset($id)){
-        $stmt = $db->prepare("UPDATE Products set name=:name, user_id=:user, quantity=:quantity, price=:price, description=:description where id=:id");
+        $stmt = $db->prepare("UPDATE Products set name=:name, price=:pr, quantity=:quantity, description=:desc, category=:cat where id=:id");
+
         $r = $stmt->execute([
             ":name"=>$name,
+            ":pr"=>$pr,
             ":quantity"=>$quantity,
-            ":price"=>$price,
-            ":description"=>$description,
-            ":user"=>$user,
-            ":id"=>$id
+            ":desc"=>$desc,
+            ":id"=>$id,
+            ":cat"=>$cat
         ]);
         if($r){
             flash("Updated successfully with id: " . $id);
@@ -57,21 +58,29 @@ if(isset($id)){
 }
 ?>
 
-<form method="POST">
-    <label>Name</label>
-    <input name="name" placeholder="name"/>
+    <form method="POST">
+        <div class="form-group">
+            <label>Name</label>
+            <input name="name" placeholder="Name" value="<?php echo $result["name"];?>"/>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <input type="text" name="category"/>
+        </div>
+        <div class="form-group">
+            <label>Price</label>
+            <input type="number" min="0" name="price"/>
+        </div>
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" min="0" name="quantity"/>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description"/>
+        </div>
+        <input type="submit" name="save" value="Update"/>
+    </form>
 
-    <label>quantity</label>
-    <input type="number" min="1" name="quantity"/>
 
-    <label>price</label>
-    <input type="number" min="1" name="price"/>
-
-    <label>description</label>
-    <input type="TEXT"  name="description"/>
-
-
-    <input type="submit" name="save" value="Update"/>
-</form>
-
-<?php require(__DIR__ . "/partials/flash.php");
+<?php require(__DIR__ . "/../../partials/flash.php");
