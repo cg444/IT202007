@@ -43,9 +43,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div>Description:</div>
                         <div><?php safer_echo($r["description"]); ?></div>
                     </div>
-                    <div>
-                        <a type="button" href="customer_view_products.php?id=<?php safer_echo($r['id']); ?>">View</a>
-                    </div>
+   
                 </div>
             <?php endforeach; ?>
         </div>
