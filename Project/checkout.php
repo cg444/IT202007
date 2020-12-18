@@ -1,194 +1,262 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
+
 <?php
 if (!is_logged_in()) {
-    //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You must be logged in to access this page");
     die(header("Location: login.php"));
 }
 ?>
 
 <?php
-$isValid = true;
+
+$userID = get_user_id();
+$cartID = 0;
+$productID = 0;
+$results = [];
+$quantity = 0;
+$pquantity = 0;
+$subtotal = 0;
+$payments = [];
+$paymentMethod ="";
 $address = "";
-$Payment = "";
-if (isset($_POST["place"])){
-
-    if( isset($_POST["address"])){
-        $address = $_POST["address"];
-    }
-
-    if( isset($_POST["address2"])){
-        $address = $address . ", " .$_POST["address2"];
-    }
-    if( isset($_POST["city"])){
-        $address = $address . ", " .$_POST["city"];
-    }
-    if( isset($_POST["state"])){
-        $address = $address . ", " .$_POST["state"];
-    }
-    if( isset($_POST["zip"])){
-        $address = $address . ", " .$_POST["zip"];
-    }
-    if( isset($_POST["payment"])){
-        $Payment = $_POST["payment"];
-    }
-
-    if (!isset($_POST["address"])  || !isset($_POST["city"]) || !isset($_POST["state"]) ||
-        !isset($_POST["zip"]) || !isset($_POST["payment"]) ){
-        $isValid = false;
-
-    }
+$amountTendered = 0;
+$noError = True;
+$query = "";
+$orderID =0;
+$redirect = "";
+$backupOrderID = 0;
 
 
-    if ($isValid){
-        //pull data from user's cart
-        $db = getDB();
-        $id = get_user_id();
-        $results = [];
-
-        if (isset($id)) {
-            $stmt = $db->prepare("SELECT Cart.product_id, Cart.quantity, Cart.user_id, Cart.price, Products.name, Products.quantity as originalQ,
-      (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
-       WHERE Users.id = :q AND Products.visibility = 0 ");
-
-            $r = $stmt->execute([":q" => $id]);
-            if ($r) {
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            else {
-                flash("There was a problem fetching the results ");
-            }
-        } else{flash("You do not have a valid ID");}
-
-        // calculating total and checking for quantity
-        $quantityCheck = true;
-        $total = 0;
-        foreach($results as $a){
-            if ($a["sub"]){
-                $total += $a["sub"];
-            }
-
-            if($a["quantity"] > $a["originalQ"]){
-                $originalQ = $a["originalQ"];
-                $name = $a["name"];
-                $quantityCheck = false;
-            }
-        }
-
-        if ($quantityCheck){
-            // creating an order for user
-            $stmt = $db->prepare("INSERT INTO Orders(user_id, total_price, address, Payment) VALUES(:user_id,:total_price, :address, :Payment)");
-
-            $r = $stmt->execute([":user_id" => $id,
-                ":total_price" => $total,
-                ":address" => $address,
-                ":Payment" => $Payment
-            ]);
-            $e = $stmt->errorInfo();
-            if ($e[0] == "00000") {
-                echo "processing...";
-            }else{
-                flash("oops, something went wrong");
-            }
-
-            //fetching last order entered in table by MAX(id)
-            $orderid = [];
-            $stmt = $db->prepare("SELECT MAX(id) as last_order_id from Orders where user_id = :id ");
-            $r = $stmt->execute([":id" => $id]);
-            if ($r) {
-                $orderid = $stmt->fetch(PDO::FETCH_ASSOC);
-            }
-            else {
-                flash("There was a problem fetching the results ");
-            }
-
-
-            // populating order items that are confirmed
-
-            foreach($results as $data){
-                $stmt = $db->prepare("INSERT INTO ordersItems(product_id, user_id, quantity, price, order_id) VALUES(:product_id,:user_id, :quantity, :price, :order_id)");
-                $r = $stmt->execute([":product_id" => $data["product_id"],
-                    ":user_id" => $id,
-                    ":quantity" => $data["quantity"],
-                    ":price" => $data["price"],
-                    ":order_id" => $orderid["last_order_id"]
-                ]);
-
-                //update quantity in products.
-
-                $stmt = $db->prepare("UPDATE Products set  quantity =quantity - :desired where id = :id");
-                $r = $stmt->execute([":desired" => $data["quantity"], ":id" => $data["product_id"]]);
-                if ($r) {
-                    echo "Updated quantity";
-                }
-                else {
-                    echo "Error updating quantity";
-                }
-            }
-
-            //when all said and done, delete all items from cart...
-
-            if(isset($_POST["place"])){
-                $stmt = $db->prepare("DELETE FROM Cart where user_id = :uid");
-                $r = $stmt->execute([":uid"=>get_user_id()]);
-                if($r){
-                    echo "items were deleted";
-                }
-            }
-
-            //redirect to Confirmation
-            echo "<script> location.href='confirmation.php'; </script>";
-            exit;
-
-        }
-        else{ //if quantitycheck is false
-            flash ("for item: $name, the desired quantity should be less that $originalQ since that is what we have in stock");
-        }
-
-
-    }else{ //if missing fields
-        flash("missing fields, please fill out form");
-    }
+$db = getDB();
+$stmt = $db->prepare("SELECT * from PaymentMethods");
+$r = $stmt->execute();
+if ($r) {
+    $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
+
+$db = getDB();
+$stmt = $db->prepare("SELECT Cart.price, name, product_id, Cart.id, Cart.quantity, Products.quantity as pquantity From Cart JOIN Products on Cart.product_id = Products.id where Cart.user_id=:user_id LIMIT 10");
+$r = $stmt->execute([":user_id"=> $userID,]);
+if ($r) {
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+else {
+    flash("There was a problem fetching the results " . var_export($stmt->errorInfo(), true));
+}
+
+if (isset($_POST["payment"])){
+    $subtotal = $_POST["subtotal"];
+    if (empty($_POST["payment"])){
+        flash("Please enter a payment value higher than your subtotal");
+        $noError = false;
+    }
+    if ($_POST["payment"] < $subtotal) {
+        $noError = false;
+        flash("Amount Tendered Lower than subtotal");
+    }   }
+
+
+
+if (isset($_POST["streetLine1"])){
+    if (empty($_POST["streetLine1"])){
+        $noError = false;
+        flash("There was a problem with Street Line 1");
+    } }
+
+if (isset($_POST["payment_method"])){
+    if ($_POST["payment_method"] == "-1"){
+        $noError = false;
+        flash("Please Select a Payment Method");
+    } }
+
+if (isset($_POST["steetLine2"])){
+    if (empty($_POST["streetLine2"])){
+        $noError = false;
+        flash("Please Enter a Payment Method");
+    } }
+
+if (isset($_POST["state"])){
+    if (empty($_POST["state"])){
+        $noError = false;
+        flash("There was a problem with State");
+    } }
+
+
+if (isset($_POST["city"])){
+    if (empty($_POST["city"])){
+        $noError = false;
+        flash("There was a problem with City");
+    } }
+
+if (isset($_POST["zipCode"])){
+    if (empty($_POST["zipCode"])){
+        $noError = false;
+        flash("There was a problem with Zip Code");
+    } }
+
+
+if(isset($_POST["cquantity"]) && isset ($_POST["pquantity"])) {
+    $quantity = $_POST["cquantity"];
+    $pquantity = $_POST["pquantity"];
+    if ($quantity > $pquantity) {
+        flash ("One of Your Items has too high a quantity");
+        $noError = false;
+    }
+
+
+}
+
+
+if(isset($_POST["quantity"])) {
+    $quantity = (int)$_POST["quantity"];
+    if($quantity == 0) {
+        $cartID = $_POST["id"];
+        $db = getDB();
+        $stmt = $db->prepare("DELETE From Cart where id = :cartID");
+        $r = $stmt->execute([":cartID"=> $cartID,]);
+    }
+    if ($quantity != 0 ) {
+        $productID = $_POST["product_id"];
+        $db = getDB();
+        $stmt = $db->prepare("INSERT into Cart (`product_id`, `user_id`, `quantity`) VALUES (:productID, :userID, :quantity) on duplicate key update quantity = :quantity");
+        $r = $stmt->execute([
+            ":productID" => $productID,
+            ":userID" => $userID,
+            ":quantity" => $quantity
+        ]);
+    }
+}
+
+if ($noError == True && !empty($_POST["streetLine1"]) && !empty($_POST["streetLine2"]) && !empty($_POST["city"]) && !empty($_POST["state"]) && !empty($_POST["zipCode"])) {
+    $quantity = $_POST["cquantity"];
+    $pquantity = $_POST["pquantity"];
+    $address = $_POST["streetLine1"] . " " . $_POST["streetLine2"] . " " . $_POST["city"] . " " . $_POST["state"] . " " . $_POST["zipCode"] ;
+    $paymentMethod = $_POST["payment_method"];
+    $subtotal = $_POST["subtotal"];
+    $amountTendered = $_POST["payment"];
+    $newQuantity = $pquantity - $quantity;
+
+
+
+    $stmt = $db->prepare("INSERT into Orders (`user_id`, `total_price`, `payment_method`, `address`) VALUES (:userID, :tprice, :pmethod, :addr)");
+    $r = $stmt->execute([
+        ":tprice"=>$subtotal,
+        ":userID"=>$userID,
+        ":pmethod"=>$paymentMethod,
+        ":addr"=>$address
+    ]);
+    $db = getDB();
+    $orderID = $db->lastInsertId();
+    $backupOrderID = $orderID;
+
+    echo var_export($stmt->errorInfo(), true);
+
+    $query = "INSERT into OrderItems (`user_id`, `unit_price`, `product_id`, `order_id`, `quantity`) VALUES ";
+    $params = [];
+    foreach ($results as $index => $result) {
+        if ($index > 0) {
+            $query .= ",";
+        }
+        $query .= "(:userID, :price$index, :pid$index, :oid, :quantity$index )";
+        $params[":pid$index"] = $result["product_id"];
+        $params[":quantity$index"] = $result["quantity"];
+        $params[":price$index"] = $result["price"];
+    }
+    $params[":oid"] = $orderID;
+    $params[":userID"] = $userID;
+
+    $stmt = $db->prepare($query);
+    $r = $stmt->execute($params);
+    echo var_export($stmt->errorInfo(), true);
+    $db = getDB();
+    $stmt = $db->prepare("DELETE from Cart where user_id = :userID");
+    $r = $stmt->execute([":userID"=> $userID,]);
+    $db = getDB();
+    foreach ($results as $index => $result) {
+        $stmt = $db->prepare("UPDATE Products SET quantity = :newQuantity WHERE id = :productID");
+        $r = $stmt->execute([
+            ":newQuantity"=>$newQuantity,
+            ":productID"=>$result["product_id"]
+        ]);  }
+    echo var_export($stmt->errorInfo(), true);
+    $redirect = "Location: view_order.php?id=";
+    $redirect .= $backupOrderID;
+    header($redirect);
+}
 ?>
 
-    <form method = "POST">
-        <div class="form-group">
-            <h1> ADDRESS </h1>
-            <label for="Address">Address</label>
-            <input type="text" name="address" class="form-control" id="Address" placeholder="Street Address" required>
-        </div>
-        <div class="form-group">
-            <label for="Appt.">Address 2</label>
-            <input type="text" name="address2" class="form-control" id="Appt." placeholder="">
-        </div>
-        <div class="form-group">
-            <div class="form-group col-md-6">
-                <label for="City">City</label>
-                <input type="text" name="city" class="form-control" id="City" placeholder="ie. Newark" required>
-            </div>
-            <div class="form-group">
-                <label for="State">State</label>
-                <input type="text" name="state" class="form-control" id="State" placeholder="ie New Jersey">
-            </div>
-            <div class="form-group col-md-2">
-                <label for="Zip">Zip</label>
-                <input type="text" name="zip" class="form-control" id="Zip" required>
-            </div>
-        </div>
-        <h1> PAYMENT METHOD </h1>
-        <div class="form-group">
-            <select name = "payment" id="PAYMENT" class="form-control" required>
-                <option value="visa">Visa</option>
-                <option value="discover">Discover</option>
-                <option value="mastercard">MasterCard</option>
-                <option value="AMEX">AMEX</option>
-                <option value="cash">Cash</option>
-            </select>
-        </div>
-        <button class="btn btn-secondary btn-lg btn-block" type="submit" name="place" value="place">Place Order</button>
-    </form>
 
-<?php require_once(__DIR__ . "/partials/flash.php"); ?>
+    <h3>Checkout</h3>
+    <div class="results">
+<?php if (count($results) > 0): ?>
+    <?php foreach ($results as $r): ?>
+        <?php  $subtotal += ($r["price"]*$r["quantity"]); ?>
+        <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title"><?php safer_echo($r["name"]); ?></h5>
+            <div>Price: <?php safer_echo(($r["price"]* $r["quantity"])); ?></div>
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" min="0" name="quantity" value="<?php echo $r["quantity"]; ?>"/>
+                <?php if ($r["pquantity"] < $r["quantity"]) : ?>
+                    <?php flash("Quantity of " . $r["name"] . " too high, please enter a lower quantity");
+                    $noError = False;
+                endif; ?>
+                <?php if ($r["pquantity"] > $r["quantity"]): ?>
+                    <?php $noError = True; ?>
+                <?php endif; ?>
+                <input type="submit" name="save" value="Update Quantity"/>
+                <input type="hidden" name="product_id" value="<?php echo $r["product_id"]; ?>"/>
+                <input type="hidden" name="id" value="<?php echo $r["id"]; ?>"/>
+            </div>
+        </form>
+        <form method="POST">
+            <input type="hidden" name="quantity" value="0"/>
+            <input type="submit" value="Remove Item"/>
+            <input type="hidden" name="product_id" value="<?php echo $r["product_id"]; ?>"/>
+            <input type="hidden" name="id" value="<?php echo $r["id"]; ?>"/>
+        </form>
+
+    <?php endforeach; ?>
+    <div>
+        <a type="button" href="checkout.php">Checkout</a>
+    </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Subtotal:<?php safer_echo($subtotal); ?></h5>
+        </div> </div> </div>
+
+
+    <label>Payment Method</label>
+    <form method="POST">
+    <select name="payment_method" value="<?php echo $payment["payment_method"];?>" >
+        <option value="-1">None</option>
+        <?php foreach ($payments as $payment): ?>
+            <option value="<?php safer_echo($payment["payment_method"]); ?>"
+            ><?php safer_echo($payment["payment_method"]); ?></option> <?php echo ($payment["payment_method"] == $product["id"] ? 'selected="selected"' : ''); ?>
+        <?php endforeach; ?>
+    </select>
+<?php endif; ?>
+
+
+
+    <input type="number" name="payment" value=""/>
+    <input type="submit" name="payment" value="Payment"/>
+
+
+    <input type="text" name="streetLine1" placeholder="Street Line 1"/>
+    <input type="text" name="streetLine2" placeholder="Street Line 2"/>
+    <input type="text" name="city" placeholder="City"/>
+    <input type="text" name="state" placeholder="State"/>
+    <input type="number" name="zipCode" placeholder="Zip Code"/>
+    <input type="hidden" name="subtotal" value="<?php echo $subtotal; ?>"/>
+    <input type="hidden" name="cquantity" value="<?php echo $r["quantity"]; ?>"/>
+    <input type="hidden" name="pquantity" value="<?php echo $r["pquantity"]; ?>"/>
+    <input type="submit" name="save" value="Place Order"/>
+    </form>
+<?php require(__DIR__ . "/partials/flash.php"); ?>
