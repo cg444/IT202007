@@ -41,7 +41,6 @@ if (isset($_POST["place"])){
 
 
     if ($isValid){
-        //pull data from user's cart
         $db = getDB();
         $id = get_user_id();
         $results = [];
@@ -60,7 +59,6 @@ if (isset($_POST["place"])){
             }
         } else{flash("You do not have a valid ID");}
 
-        // calculating total and checking for quantity
         $quantityCheck = true;
         $total = 0;
         foreach($results as $a){
@@ -76,7 +74,6 @@ if (isset($_POST["place"])){
         }
 
         if ($quantityCheck){
-            // creating an order for user
             $stmt = $db->prepare("INSERT INTO Orders(user_id, total_price, address, Payment) VALUES(:user_id,:total_price, :address, :Payment)");
 
             $r = $stmt->execute([":user_id" => $id,
@@ -102,9 +99,6 @@ if (isset($_POST["place"])){
                 flash("There was a problem fetching the results ");
             }
 
-
-            // populating order items that are confirmed
-
             foreach($results as $data){
                 $stmt = $db->prepare("INSERT INTO ordersItems(product_id, user_id, quantity, price, order_id) VALUES(:product_id,:user_id, :quantity, :price, :order_id)");
                 $r = $stmt->execute([":product_id" => $data["product_id"],
@@ -126,8 +120,6 @@ if (isset($_POST["place"])){
                 }
             }
 
-            //when all said and done, delete all items from cart...
-
             if(isset($_POST["place"])){
                 $stmt = $db->prepare("DELETE FROM Cart where user_id = :uid");
                 $r = $stmt->execute([":uid"=>get_user_id()]);
@@ -136,17 +128,17 @@ if (isset($_POST["place"])){
                 }
             }
 
-            //redirect to Confirmation
+
             echo "<script> location.href='confirmation.php'; </script>";
             exit;
 
         }
-        else{ //if quantitycheck is false
+        else{
             flash ("$name quantity selected, is greater than our current stock of $originalQ ");
         }
 
 
-    }else{ //if missing fields
+    }else{
         flash("missing fields, please fill out form");
     }
 }
