@@ -58,9 +58,9 @@ if (isset($id)) {
     }
 } else{flash("You do not have a valid ID");}
 $total = 0;
-foreach($results as $a){
-    if ($a["sub"]){
-        $total += $a["sub"];
+foreach($results as $t){
+    if ($t["sub"]){
+        $total += $t["sub"];
 
     }
 }
@@ -95,7 +95,7 @@ foreach($results as $a){
                                 <button type="submit" class="btn btn-success" name="update">update</button>
                             </form></td>
                         <td><?php safer_echo($r["description"])?></td>
-                        <td>$<?php safer_echo($r["sub"])?></td>
+                        <td>$<?php safer_echo($r["price"])?></td>
                         <td><button form= "1" type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item">Delete item</button></td>
                     </tr>
                 <?php endforeach; ?>
@@ -107,7 +107,4 @@ foreach($results as $a){
             <?php endif; ?>
             </tbody>
         </table>
-        <form method = "POST">
-            <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
-        </form>
         <?php require_once(__DIR__ . "/partials/flash.php"); ?>
