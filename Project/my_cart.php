@@ -105,8 +105,8 @@ foreach($results as $a){
                 </tr>
             <?php else: ?>
                 <p>No results, Cart is Empty</p>
-                <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
             <?php endif; ?>
             </tbody>
         </table>
+        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
         <?php require_once(__DIR__ . "/partials/flash.php"); ?>
