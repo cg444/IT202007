@@ -23,6 +23,16 @@ if (isset($_POST["quantity"])){
     }
 
 }
+
+if (isset($id)) {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT price FROM Products where id = :id");
+    $r = $stmt->execute([":id" => $id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    $price = $product["price"];
+    $r = $stmt->execute([":price"=>$price]);
+}
+
 if(isset($_POST["clear"])){
     $stmt = $db->prepare("DELETE FROM Cart where user_id = :uid");
     $r = $stmt->execute([":uid"=>get_user_id()]);
@@ -48,7 +58,6 @@ if (isset($id)) {
     $stmt = $db->prepare("SELECT Cart.*,Products.name, Products.description, Users.username ,
     (Products.price * Cart.quantity) as sub from Cart JOIN Users on Users.id = Cart.user_id JOIN Products on Products.id = Cart.product_id
      WHERE Users.id = :q LIMIT 10");
-
     $r = $stmt->execute([":q" => $id]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -88,7 +97,7 @@ foreach($results as $t){
                     <tr>
                         <th scope="row"> <p class="card-text"><small class="text-muted"> <?php safer_echo($r["modified"])?></small></p></th>
                         <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
-                        <td>$<?php safer_echo($r["price"])?></td>
+                        <td>$<?php safer_echo($r[":price"])?></td>
                         <td><form method = "POST"  id = "1" style = "display: flex;">
                                 <input  type="number" min="0" name="quantity" value="<?php echo $r["quantity"];?>"/>
                                 <input type="hidden" name="cartId" value="<?php echo $r["id"];?>"/>
