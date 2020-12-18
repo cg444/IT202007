@@ -11,12 +11,13 @@ if (!is_logged_in()) {
 <?php
 $db = getDB();
 $id = get_user_id();
-$stmt = $db->prepare("SELECT MAX(id) as last_order_id from Orders where user_id = :id ");
+$stmt = $db->prepare("SELECT id from Orders where user_id = :id ");
 $r = $stmt->execute([":id" => $id]);
+$order = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($r) {
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo "your order number: " . $db->lastInsertId();
 }
 else {
     flash("There was a problem fetching the results " . var_export($stmt->errorInfo(), true));
 }
-echo "your order number: " . $db->lastInsertId();
+
