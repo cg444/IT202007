@@ -43,7 +43,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div>Description:</div>
                         <div><?php safer_echo($r["description"]); ?></div>
                     </div>
-   
+
                 </div>
             <?php endforeach; ?>
         </div>

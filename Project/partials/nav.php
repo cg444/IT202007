@@ -19,7 +19,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
             <li><a href="logout.php">Logout</a></li>
             <li><a href="customer_list_products.php">View Products</a></li>
             <li><a href="my_cart.php">View Cart</a></li>
-            <li><a href="customer_cart.php">Create Cart</a></li>
+            <li><a href="shop.php">Create Cart</a></li>
         <?php endif; ?>
     </ul>
 </nav>
