@@ -28,7 +28,7 @@ if (isset($_POST["search"]) && !empty($query)) {
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
                     <div>
-                        <div>Name:</div>
+                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
                         <div><?php safer_echo($r["name"]); ?></div>
                     </div>
                     <div>
@@ -44,7 +44,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div><?php safer_echo($r["description"]); ?></div>
                     </div>
                     <div>
-                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
+                        <a type="button" href="customer_view_products.php?id=<?php safer_echo($r['id']); ?>">View</a>
                     </div>
                 </div>
             <?php endforeach; ?>
