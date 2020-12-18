@@ -67,7 +67,7 @@ foreach($results as $a){
 
 ?>
 <h3>MY CART<h3>
-        <a href = "checkout.php"> <button style= "margin: 1em; float: right;" type="submit" class="btn btn-success" name="clear">checkout</button> </a>
+        <a href = "checkout.php"> <button type="submit" class="btn btn-success" name="clear">checkout</button> </a>
 
         <table class="table table-striped">
             <thead>
