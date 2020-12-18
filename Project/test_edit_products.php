@@ -61,7 +61,7 @@ if(isset($id)){
 
     <form method="POST">
             <label>Name</label>
-            <input name="name" placeholder="Name" value="<?php echo $result[":name"];?>"/>
+            <input name="name" placeholder="Name" value="<?php echo $result[":id"];?>"/>
             <label>Price</label>
             <input type="number" min="0" name="price"/>
             <label>Quantity</label>
