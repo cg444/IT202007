@@ -101,9 +101,9 @@ foreach($results as $a){
                 <?php endforeach; ?>
                 <tr>
                     <td>total: $<?php safer_echo($total)?></td>
-                    <form method = "POST">
+                    
                         <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
-                    </form>
+
                 </tr>
             <?php else: ?>
                 <p>No results, Cart is Empty</p>
