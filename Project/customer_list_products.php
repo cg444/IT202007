@@ -29,7 +29,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                 <div class="list-group-item">
                     <div>
                         <div>Name:</div>
-                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['product_id']); ?>"> <?php safer_echo($r["name"])?></a></td>
+                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['id']); ?>"> <?php safer_echo($r["name"])?></a></td>
                     </div>
                     <div>
                         <div>Price:</div>
