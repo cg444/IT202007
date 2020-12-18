@@ -79,27 +79,6 @@ if ($r) {
     </script>
 
 
-
-
-    <div>
-        <form method="POST" style="float: right; margin-top: 3em; display: inline-flex; margin-right: 2em;" id = "form1">
-            <button style= "margin-right: 2em;"type="submit" name="sort" value="sort"  class="btn btn-primary">low-high</button>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categories
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                    <?php foreach ($category as $c): ?>
-                        <button type="submit" class="dropdown-item" name = "category" value = "<?php echo $c["category"];?>" ><?php safer_echo($c["category"]);?></button>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </form>
-    </div>
-
-
-
-
     <h3>PRODUCTS</h3>
         <?php if (count($results) > 0): ?>
             <?php foreach ($results as $r): ?>
