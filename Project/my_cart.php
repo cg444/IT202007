@@ -108,5 +108,7 @@ foreach($results as $a){
             <?php endif; ?>
             </tbody>
         </table>
+        <form method = "POST">
         <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
+        </form>
         <?php require_once(__DIR__ . "/partials/flash.php"); ?>
