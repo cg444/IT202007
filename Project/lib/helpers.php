@@ -68,6 +68,18 @@ function getMessages() {
     return array();
 }
 
+function subTotal($id, $quantity){
+
+    $db = getDB();
+    $stmt = $db->prepare("SELECT price FROM Products where id = :id");
+    $r = $stmt->execute([":id" => $id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    $price = $product["price"] * $quantity;
+
+
+    return $price;
+}
+
 function getURL($path) {
     if (substr($path,0,1) == "/") {
         return $path;

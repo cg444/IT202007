@@ -9,7 +9,7 @@ if (!is_logged_in()) {
 $query = "";
 $id=get_user_id();
 $results = [];
-$price = 0;
+
 if (isset($_POST["query"])) {
     $query = $_POST["query"];
 }
@@ -53,12 +53,8 @@ if (isset($_POST["search"]) && !empty($query)) {
                             <div><?php safer_echo($r["quantity"]); ?></div>
                         </div>
                         <div>
-                            <div>Subtotal:</div>
-                            <div><?php safer_echo($r["quantity"*"price"]); ?></div>
-                        </div>
-                        <div>
-                            <a type="button" href="customer_edit_cart.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                            <a type="button" href="customer_view_cart.php?id=<?php safer_echo($r['id']); ?>">View</a>
+                            <a href = "customer_edit_cart.php"> <button type="submit" class="btn btn-success" name="clear">Edit</button> </a>
+                            <a href = "my_cart.php"> <button type="submit" class="btn btn-success" name="clear">View</button> </a>
                         </div>
                     </div>
                 <?php endforeach; ?>

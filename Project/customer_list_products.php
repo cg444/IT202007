@@ -7,7 +7,7 @@ if (isset($_POST["query"])) {
 }
 if (isset($_POST["search"]) && !empty($query)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, name, price, quantity, description, user_id, category from Products WHERE category like :q LIMIT 10");
+    $stmt = $db->prepare("SELECT * from Products WHERE category like :q and visibility = 0 LIMIT 10");
     $r = $stmt->execute([":q" => "%$query%"]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                 <div class="list-group-item">
                     <div>
                         <div>Name:</div>
-                        <div><?php safer_echo($r["name"]); ?></div>
+                        <td><a href = "customer_view_products.php?id=<?php safer_echo($r['id']); ?>"> <?php safer_echo($r["name"])?></a></td>
                     </div>
                     <div>
                         <div>Price:</div>
@@ -43,9 +43,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div>Description:</div>
                         <div><?php safer_echo($r["description"]); ?></div>
                     </div>
-                    <div>
-                        <a type="button" href="customer_view_products.php?id=<?php safer_echo($r['id']); ?>">View</a>
-                    </div>
+
                 </div>
             <?php endforeach; ?>
         </div>

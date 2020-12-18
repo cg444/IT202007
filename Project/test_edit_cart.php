@@ -13,6 +13,16 @@ if (isset($_GET["id"])) {
 }
 ?>
 <?php
+$db = getDB();
+//deleting
+if(isset($_POST["clear"])){
+    $stmt = $db->prepare("DELETE FROM Cart where user_id = :uid");
+    $r = $stmt->execute([":uid"=>get_user_id()]);
+    if($r){
+        flash("Deleted all items from cart", "success");
+    }
+}
+
 //saving
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
@@ -23,7 +33,6 @@ if (isset($_POST["save"])) {
     }
     $quantity = $_POST["quantity"];
     $user = get_user_id();
-    $db = getDB();
     if (isset($CartID)) {
         $stmt = $db->prepare("UPDATE Cart set quantity=:quantity where id=:id");
         $r = $stmt->execute([
@@ -72,6 +81,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <label>Quantity</label>
         <input type="number" min="0" name="quantity" value="<?php echo $result["quantity"]; ?>"/>
         <input type="submit" name="save" value="Update"/>
+        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
     </form>
 
 

@@ -34,6 +34,9 @@ if (isset($id)) {
                 <div>Category <?php safer_echo($result["category"]); ?></div>
             </div>
         </div>
+        <div>
+            <a type="button" href="shop.php">Back to Shop</a>
+        </div>
     </div>
 <?php else: ?>
     <p>Error looking up id...</p>

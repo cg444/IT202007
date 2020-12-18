@@ -38,7 +38,6 @@ if(isset($_POST["save"])){
         ":pr"=>$pr,
         ":quantity"=>$quantity,
         ":desc"=>$desc,
-        //":nst"=>$nst,
         ":user"=>$user,
         ":category"=>$category
     ]);
