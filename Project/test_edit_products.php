@@ -30,7 +30,6 @@ if(isset($_POST["save"])){
             ":price"=>$price,
             ":description"=>$description,
             ":user"=>$user,
-            //	":nst"=>$nst,
             ":id"=>$id
         ]);
         if($r){
