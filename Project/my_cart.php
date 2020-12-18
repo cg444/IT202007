@@ -96,9 +96,7 @@ foreach($results as $t){
                         <td><?php safer_echo($r["description"])?></td>
                         <td>$<?php safer_echo($r["price"])?></td>
                         <td><button form= "1" type="submit" class="btn btn-danger" name="delete" value="Delete Cart Item">Delete item</button></td>
-                        <form>
-                            <input  type="submit" class="btn btn-danger" name="clear">Clear Cart</input>
-                        </form>
+                        
                     </tr>
                 <?php endforeach; ?>
                 <tr>
