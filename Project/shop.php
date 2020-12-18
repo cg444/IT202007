@@ -90,7 +90,7 @@ if ($r) {
                             <button form = "form1" type="button" onclick="addToCart(<?php echo $r["id"];?>);" class="btn btn-primary btn-lg">Add to Cart</button>
                         <?php endif;?>
                         <?php if (has_role("Admin")): ?>
-                            <a href="test_edit_products.php?id=<?php safer_echo($r['id']); ?>" <button style= "margin: 1em; float: right;" type="submit" class="btn btn-success"</button>Edit</a>
+                            <a href = "test_edit_products.php"> <button style= "margin: 1em; float: right;" type="submit" class="btn btn-success" name="clear">checkout</button> </a>
                         <?php endif; ?>
                     </div>
             <?php endforeach; ?>
