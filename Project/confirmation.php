@@ -6,17 +6,17 @@ if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
 ?>
-    <h1> YOURE ORDER HAS BEEN PLACED! </h1>
+    <h3> Order Confirmed </h3>
 
 <?php
 $db = getDB();
 $id = get_user_id();
-$stmt = $db->prepare("SELECT MAX(id) as last_order_id from Orders where user_id = :id ");
+$stmt = $db->prepare("SELECT id from Orders where user_id = :id ");
 $r = $stmt->execute([":id" => $id]);
+$order = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($r) {
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-else {
+    flash("Created successfully with id: " . $db->lastInsertId());
+} else {
     flash("There was a problem fetching the results " . var_export($stmt->errorInfo(), true));
 }
 echo "your order number: " . $order["last_order_id"];
