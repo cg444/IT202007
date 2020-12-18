@@ -93,7 +93,7 @@ if (isset($_POST["place"])){
 
             //fetching last order entered in table by MAX(id)
             $orderid = [];
-            $stmt = $db->prepare("SELECT MAX(id) as last_order_id from Orders where user_id = :id ");
+            $stmt = $db->prepare("SELECT id from Orders where user_id = :id ");
             $r = $stmt->execute([":id" => $id]);
             if ($r) {
                 $orderid = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -111,7 +111,7 @@ if (isset($_POST["place"])){
                     ":user_id" => $id,
                     ":quantity" => $data["quantity"],
                     ":price" => $data["price"],
-                    ":order_id" => $orderid["last_order_id"]
+                    ":order_id" => $orderid[":order_id"]
                 ]);
 
                 //update quantity in products.
