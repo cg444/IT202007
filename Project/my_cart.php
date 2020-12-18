@@ -101,12 +101,11 @@ foreach($results as $a){
                 <?php endforeach; ?>
                 <tr>
                     <td>total: $<?php safer_echo($total)?></td>
-                    
-                        <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
 
                 </tr>
             <?php else: ?>
                 <p>No results, Cart is Empty</p>
+                <input type="submit" class="btn btn-danger" name="clear" value="Clear Cart"/>
             <?php endif; ?>
             </tbody>
         </table>
